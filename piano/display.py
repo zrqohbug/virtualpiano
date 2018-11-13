@@ -6,10 +6,12 @@ import subprocess
 import math
 import pygame
 from pygame.locals import* 
+
     os.putenv('SDL_VIDEODRIVER','fbcon')
     os.putenv('SDL_FBDEV','/dev/fb1')
     os.putenv('SDL_MOUSEDRV','TSLIB')
     os.putenv('SDL_MOUSEDEV','/dev/input/touchscreen')
+
 
 def displaynote():
     pygame.mouse.set_visible(False)
@@ -43,7 +45,7 @@ def displaynote():
     state =  0
     flag = 0
     p1 = 3
-    p2 = 3
+    p2 = 3   
 
     while True:
         screen.fill(BLACK)
@@ -91,3 +93,6 @@ def displaynote():
         pygame.display.flip()
 
 def display():
+	score = pygame.image.load("score.png")
+	scorerect = ball.get_rect()
+	scorerect.move(160,120)
