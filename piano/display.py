@@ -7,19 +7,13 @@ import math
 import pygame
 from pygame.locals import* 
 
-    os.putenv('SDL_VIDEODRIVER','fbcon')
-    os.putenv('SDL_FBDEV','/dev/fb1')
-    os.putenv('SDL_MOUSEDRV','TSLIB')
-    os.putenv('SDL_MOUSEDEV','/dev/input/touchscreen')
+
+
+base_rhy = 5
 
 
 def displaynote():
-    pygame.mouse.set_visible(False)
-    WHITE = 255,255,255
-    BLACK = 0,0,0
-    screen = pygame.display.set_mode((320,240))
-    x = 0
-    y = 1
+	score_ = pygame.image.load("score_high.png")
     my_font = pygame.font.Font(None,22)
     my_lefthistory = {'Left History':(70,20)}
     my_righthistory = {'Right History':(250,20)}
@@ -42,10 +36,6 @@ def displaynote():
     duty_cycle = pulse_duration * 100 / (pulse_duration + 20.0)
     pwm_instance_1.start(duty_cycle)		# where 0.0 <= duty_cycle <= 100.0
     pwm_instance_2.start(duty_cycle)		# where 0.0 <= duty_cycle <= 100.0
-    state =  0
-    flag = 0
-    p1 = 3
-    p2 = 3   
 
     while True:
         screen.fill(BLACK)
@@ -93,6 +83,17 @@ def displaynote():
         pygame.display.flip()
 
 def display():
-	score = pygame.image.load("score.png")
-	scorerect = ball.get_rect()
-	scorerect.move(160,120)
+	score_high = pygame.image.load("score_com.png")
+	score_high1 = score_high.get_rect()
+	score_high1.move(160,120)
+	score_low = pygame.image.load("score_sim.png")
+	score_low1 = score_low.get_rect()
+	score_low1.move(160,120)
+
+
+def note_type(note_length,tune_length):
+	if (note_length > 4*base_rhy):
+	if (note_length > 3*base_rhy):
+	if (note_length > 2*base_rhy):
+	if (note_length > 1*base_rhy):	
+

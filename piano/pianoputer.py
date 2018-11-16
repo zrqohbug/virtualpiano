@@ -11,10 +11,15 @@ import stretch
 import pitchshift 
 import speedx 
 import welcome
-
+import display
+import time
 
 
 def main():
+    os.putenv('SDL_VIDEODRIVER','fbcon')
+    os.putenv('SDL_FBDEV','/dev/fb1')
+    os.putenv('SDL_MOUSEDRV','TSLIB')
+    os.putenv('SDL_MOUSEDEV','/dev/input/touchscreen')
     # Parse command line arguments
     (args, parser) = parse_arguments.parse_arguments()
 
@@ -33,18 +38,23 @@ def main():
     # So flexible ;)
     pygame.mixer.init(fps, -16, 1, 2048)
     # For the focus
-    screen = pygame.display.set_mode((150, 150))
+    screen = pygame.display.set_mode((320,240))
 
     keys = args.keyboard.read().split('\n')
     sounds = map(pygame.sndarray.make_sound, transposed_sounds)
     key_sound = dict(zip(keys, sounds))
     playing = {k: 0 for k in keys}
+    note_duration = 0
+    note_length = 0
+    tune_length = 0
+
     while (welcome.welcomeinit() == 0):
         print ('Virtual Piano')
 
     while True:
         event = pygame.event.wait()
-
+        screen.fill(BLACK)
+        display.display()
         if event.type in (pygame.KEYDOWN, pygame.KEYUP):
             key = pygame.key.name(event.key)
 
@@ -52,6 +62,7 @@ def main():
             if (key in key_sound.keys()) and (playing[key] == 0):
                 key_sound[key].play(fade_ms=50)
                 playing[key] = 1
+                a = time.time()
 
             elif event.key == pygame.K_ESCAPE:
                 pygame.quit()
@@ -61,7 +72,11 @@ def main():
             # Stops with 50ms fadeout
             key_sound[key].fadeout(50)
             playing[key] = 0
+            b = time.time()
 
+        note_duration = b - a
+        display.displaynote()
+        
 
 if __name__ == '__main__':
     try:
