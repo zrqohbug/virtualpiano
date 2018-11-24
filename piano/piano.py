@@ -13,7 +13,7 @@ import math
 
 import parse_arguments 
 import stretch 
-import pitchshift 
+import shift_pitch
 import speedx 
 import welcome
 import display
@@ -36,12 +36,9 @@ def main():
     fps, sound = wavfile.read(args.wav.name)
 
     tones = range(-24, -12)
-    sys.stdout.write('Transponding sound file... ')
+    sys.stdout.write('Ready for the computation.. ')
     sys.stdout.flush()
-    transposed_sounds = [pitchshift.pitchshift(sound, n) for n in tones]
-    print('DONE')
-
-    # So flexible ;)
+    transposed_sounds = [shift_pitch.shift_pitch(sound, n) for n in tones]
     pygame.mixer.init(fps, -16, 1, 2048)
     # init############################################################################
     screen = pygame.display.set_mode((320,240))
@@ -85,7 +82,7 @@ def main():
                 a = time.time()
                 current_status = 1
                 print (note_duration)
-                start = 1
+
             elif event.key == pygame.K_ESCAPE:
                 pygame.quit()
                 raise KeyboardInterrupt
@@ -99,11 +96,12 @@ def main():
             a = time.time()
             current_status = 0
             print (note_duration)
+            start = 1
             
         if ( former_duration != note_duration ):
             if (current_status == 0):
                 display.appendnote(key,note_duration,keys)
-            else:
+            elif (start):
                 display.appendrest(note_duration)
         #print(note_duration)
         screen.fill(WHITE)
