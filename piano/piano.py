@@ -65,6 +65,7 @@ def main():
         b = time.time()
         print ('Virtual Piano')
     screen.fill(WHITE)
+    display.displaykey(screen)
     while True:
         event = pygame.event.poll()
 
@@ -81,7 +82,8 @@ def main():
                 note_duration = b - a
                 a = time.time()
                 current_status = 1
-                print (note_duration)
+                #print (note_duration)
+
 
             elif event.key == pygame.K_ESCAPE:
                 pygame.quit()
@@ -95,8 +97,9 @@ def main():
             note_duration = b - a
             a = time.time()
             current_status = 0
-            print (note_duration)
+            #print (note_duration)
             start = 1
+
             
         if ( former_duration != note_duration ):
             if (current_status == 0):
@@ -105,6 +108,10 @@ def main():
                 display.appendrest(note_duration)
         #print(note_duration)
         screen.fill(WHITE)
+        if (current_status == 0):
+            display.displaykey(screen)
+        else:
+            display.displaykeyboard(key,keys,screen)            
         display.displaybase(screen)
         if (start) :
             display.displaynote(screen)

@@ -117,6 +117,62 @@ def appendrest(note_duration):
     globalname.notelist.append([math.floor(rest_length),99,320,0])
     #location = globalname.mainlocation * 12 + keys.index(key)
 
+def displaykey(screen):
+    keyboard = pygame.image.load("./notelib/keyboard/1_0.jpg")
+    keyboard = pygame.transform.scale(keyboard,(320,80))
+    screen.blit(keyboard,(0,160))     
+
+def displaykeyboard(key,keys,screen):
+    if ( keys.index(key) == 0 ):
+        keyboard = pygame.image.load("./notelib/keyboard/1_1.jpg")
+        keyboard = pygame.transform.scale(keyboard,(320,80))
+        screen.blit(keyboard,(0,160))
+    if ( keys.index(key) == 1 ):
+        keyboard = pygame.image.load("./notelib/keyboard/1_2.jpg")
+        keyboard = pygame.transform.scale(keyboard,(320,80))
+        screen.blit(keyboard,(0,160))
+    if ( keys.index(key) == 2 ):
+        keyboard = pygame.image.load("./notelib/keyboard/1_3.jpg")
+        keyboard = pygame.transform.scale(keyboard,(320,80))
+        screen.blit(keyboard,(0,160))
+    if ( keys.index(key) == 3 ):
+        keyboard = pygame.image.load("./notelib/keyboard/1_4.jpg")
+        keyboard = pygame.transform.scale(keyboard,(320,80))
+        screen.blit(keyboard,(0,160))
+    if ( keys.index(key) == 4 ):
+        keyboard = pygame.image.load("./notelib/keyboard/1_5.jpg")
+        keyboard = pygame.transform.scale(keyboard,(320,80))
+        screen.blit(keyboard,(0,160))
+    if ( keys.index(key) == 5 ):
+        keyboard = pygame.image.load("./notelib/keyboard/1_6.jpg")
+        keyboard = pygame.transform.scale(keyboard,(320,80))
+        screen.blit(keyboard,(0,160))
+    if ( keys.index(key) == 6 ):
+        keyboard = pygame.image.load("./notelib/keyboard/1_7.jpg")
+        keyboard = pygame.transform.scale(keyboard,(320,80))
+        screen.blit(keyboard,(0,160))
+    if ( keys.index(key) == 7 ):
+        keyboard = pygame.image.load("./notelib/keyboard/1_8.jpg")
+        keyboard = pygame.transform.scale(keyboard,(320,80))
+        screen.blit(keyboard,(0,160)) 
+    if ( keys.index(key) == 8 ):
+        keyboard = pygame.image.load("./notelib/keyboard/1_9.jpg")
+        keyboard = pygame.transform.scale(keyboard,(320,80))
+        screen.blit(keyboard,(0,160))
+    if ( keys.index(key) == 9 ):
+        keyboard = pygame.image.load("./notelib/keyboard/1_10.jpg")
+        keyboard = pygame.transform.scale(keyboard,(320,80))
+        screen.blit(keyboard,(0,160))
+    if ( keys.index(key) == 10 ):
+        keyboard = pygame.image.load("./notelib/keyboard/1_11.jpg")
+        keyboard = pygame.transform.scale(keyboard,(320,80))
+        screen.blit(keyboard,(0,160))
+    if ( keys.index(key) == 11 ):
+        keyboard = pygame.image.load("./notelib/keyboard/1_12.jpg")
+        keyboard = pygame.transform.scale(keyboard,(320,80))
+        screen.blit(keyboard,(0,160)) 
+        
+    
 def displaybase(screen):
     score = pygame.image.load("./notelib/base.png")
     score = pygame.transform.scale(score,(320,120))
