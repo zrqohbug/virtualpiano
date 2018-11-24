@@ -14,12 +14,31 @@ low_basic = [320,80]
 
 def appendnote(key,note_duration,keys):
     note_length = note_duration / base_rhy
-    location = globalname.mainlocation * 12 + keys.index(key)
-    print ( note_length, location )
-    '''if (note_length <= 1):
-        globalname.mainlocation
-        pianoputer.notelist.append()'''
-
+    if(keys.index(key) <= 1):
+        keypos = 1
+        rise = keys.index(key) - keypos
+    elif(keys.index(key) <= 3):
+        keypos = 2
+        rise = keys.index(key) - keypos - 1
+    elif(keys.index(key) <= 4):
+        keypos = 3
+        rise = keys.index(key) - keypos - 1
+    elif(keys.index(key) <= 6):
+        keypos = 4
+        rise = keys.index(key) - keypos - 2
+    elif(keys.index(key) <= 8):
+        keypos = 5
+        rise = keys.index(key) - keypos - 3
+    elif(keys.index(key) <= 10):
+        keypos = 6
+        rise = keys.index(key) - keypos - 4
+    elif(keys.index(key) <= 11):
+        keypos = 7
+        rise = 0
+    location = globalname.mainlocation - keypos*3
+    #print (math.ceil(note_length), location )
+    globalname.notelist.append([math.ceil(note_length),location,320])
+    #print (globalname.notelist)
 
     '''score_ = pygame.image.load("score_high.png")
     my_font = pygame.font.Font(None,22)
@@ -91,15 +110,67 @@ def appendnote(key,note_duration,keys):
         pygame.display.flip()'''
         
 def appendrest(note_duration):
-    note_length = note_duration / base_rhy
+    rest_length = note_duration / base_rhy 
+    if (math.floor(rest_length) > 2 ):
+        globalname.notelist.append([math.floor(rest_length),99,320])
     #location = globalname.mainlocation * 12 + keys.index(key)
 
 def displaybase(screen):
     score = pygame.image.load("./notelib/base.png")
     score = pygame.transform.scale(score,(320,120))
-    screen.blit(score,(0,0))
+    screen.blit(score,(0,40))
 
-#def display():
+def displaynote(screen):
+    #pass
+    speed = 1.5
+    if( globalname.notelist[0][2] < 80):
+        globalname.notelist.pop(0)
+    for i in globalname.notelist:
+        if( i[1]!= 99 ):
+            if (i[0] <= 2 ):
+                i[2] = i[2] - speed
+                note = pygame.image.load("./notelib/sixteenth_note.png")
+                screen.blit(note,(i[2],i[1]))
+            elif (i[0] <= 4 ):
+                i[2] = i[2] - speed
+                note = pygame.image.load("./notelib/eighth_note.png")
+                screen.blit(note,(i[2],i[1]))
+            elif (i[0] <= 8 ):
+                i[2] = i[2] - speed
+                note = pygame.image.load("./notelib/quarter_note.png")
+                screen.blit(note,(i[2],i[1]))
+            elif (i[0] <= 16 ):
+                i[2] = i[2] - speed
+                note = pygame.image.load("./notelib/half_note.png")
+                screen.blit(note,(i[2],i[1]))
+            elif (i[0] <= 32 ):
+                i[2] = i[2] - speed
+                note = pygame.image.load("./notelib/whole_note.png")
+                screen.blit(note,(i[2],i[1]))
+            else:
+                i[2] = i[2] - speed
+        else:
+            if (i[0] <= 2 ):
+                i[2] = i[2] - speed
+                note = pygame.image.load("./notelib/sixteenth_rest.png")
+                screen.blit(note,(i[2]+30,50))
+            elif (i[0] <= 4 ):
+                i[2] = i[2] - speed
+                note = pygame.image.load("./notelib/eighth_rest.png")
+                screen.blit(note,(i[2]+30,50))
+            elif (i[0] <= 8 ):
+                i[2] = i[2] - speed
+                note = pygame.image.load("./notelib/quarter_rest.png")
+                screen.blit(note,(i[2]+30,50))
+            else:
+                i[2] = i[2] - speed
+                #else:
+
+                
+                
+    print (globalname.notelist)
+    
+    #for notelength,notelocation in globalname.notelist.items()
     
 
 #def note_type(note_length,tune_length):

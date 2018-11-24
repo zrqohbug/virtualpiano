@@ -60,6 +60,7 @@ def main():
     GPIO.setmode(GPIO.BCM)
     a = 0
     b = 0
+    start = 0
     current_status = 0
     #################################################################################
     while (welcome.welcomeinit() == 0):
@@ -84,6 +85,7 @@ def main():
                 a = time.time()
                 current_status = 1
                 print (note_duration)
+                start = 1
             elif event.key == pygame.K_ESCAPE:
                 pygame.quit()
                 raise KeyboardInterrupt
@@ -104,7 +106,10 @@ def main():
             else:
                 display.appendrest(note_duration)
         #print(note_duration)
+        screen.fill(WHITE)
         display.displaybase(screen)
+        if (start) :
+            display.displaynote(screen)
         #display.display(notelist)
         former_duration = note_duration
         

@@ -1,3 +1,3 @@
 
 notelist=[]
-mainlocation = 0
+mainlocation = 48
