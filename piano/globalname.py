@@ -1,0 +1,3 @@
+
+notelist=[]
+mainlocation = 0

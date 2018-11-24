@@ -5,15 +5,23 @@ import time
 import subprocess
 import math
 import pygame
-from pygame.locals import* 
+from pygame.locals import*
+import globalname
+
+base_rhy = 0.05
+high_basic = [320,40]
+low_basic = [320,80]
+
+def appendnote(key,note_duration,keys):
+    note_length = note_duration / base_rhy
+    location = globalname.mainlocation * 12 + keys.index(key)
+    print ( note_length, location )
+    '''if (note_length <= 1):
+        globalname.mainlocation
+        pianoputer.notelist.append()'''
 
 
-
-base_rhy = 5
-
-
-def displaynote():
-	score_ = pygame.image.load("score_high.png")
+    '''score_ = pygame.image.load("score_high.png")
     my_font = pygame.font.Font(None,22)
     my_lefthistory = {'Left History':(70,20)}
     my_righthistory = {'Right History':(250,20)}
@@ -80,20 +88,20 @@ def displaynote():
         except Keyboardinterrupt:  
     	GPIO.cleanup()         
 
-        pygame.display.flip()
+        pygame.display.flip()'''
+        
+def appendrest(note_duration):
+    note_length = note_duration / base_rhy
+    #location = globalname.mainlocation * 12 + keys.index(key)
 
-def display():
-	score_high = pygame.image.load("score_com.png")
-	score_high1 = score_high.get_rect()
-	score_high1.move(160,120)
-	score_low = pygame.image.load("score_sim.png")
-	score_low1 = score_low.get_rect()
-	score_low1.move(160,120)
+def displaybase(screen):
+    score = pygame.image.load("./notelib/base.png")
+    score = pygame.transform.scale(score,(320,120))
+    screen.blit(score,(0,0))
 
+#def display():
+    
 
-def note_type(note_length,tune_length):
-	if (note_length > 4*base_rhy):
-	if (note_length > 3*base_rhy):
-	if (note_length > 2*base_rhy):
-	if (note_length > 1*base_rhy):	
+#def note_type(note_length,tune_length):
+
 

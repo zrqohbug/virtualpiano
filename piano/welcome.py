@@ -8,12 +8,10 @@ import pygame
 from pygame.locals import* 
 
 def welcomeinit():
-    pygame.mouse.set_visible(False)
-    WHITE = 255,255,255
-    BLACK = 0,0,0
     screen = pygame.display.set_mode((320,240))
-    GPIO.setmode(GPIO.BCM)
-    my_font = pygame.font.Font(None,22)
+    WHITE = 255,255,255
+    BLACK = 0,0,0    
+    my_font = pygame.font.Font(None,30)
     my_welcome = ['Welcome to Virtual Piano']
     my_welcome_pos = [(160,120)]
     screen.fill(BLACK)
@@ -35,8 +33,9 @@ def welcomeinit():
                     if ( y < 160 and y > 80):
                         if ( x < 200 and x > 120):
                             return 1
-        return 0 
-        pygame.display.flip()
+
+            pygame.display.flip()
+            return 0 
         except Keyboardinterrupt:  
     	    GPIO.cleanup()         
 
