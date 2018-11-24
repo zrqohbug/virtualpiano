@@ -17,28 +17,29 @@ def appendnote(key,note_duration,keys):
     note_length = (note_duration + 0.05 ) / base_rhy
     if(keys.index(key) <= 1):
         keypos = 1
-        rise = keys.index(key) - keypos
+        rise = keys.index(key) - keypos + 1
     elif(keys.index(key) <= 3):
         keypos = 2
-        rise = keys.index(key) - keypos - 1
+        rise = keys.index(key) - keypos - 0
     elif(keys.index(key) <= 4):
         keypos = 3
         rise = keys.index(key) - keypos - 1
     elif(keys.index(key) <= 6):
         keypos = 4
-        rise = keys.index(key) - keypos - 2
+        rise = keys.index(key) - keypos - 1
     elif(keys.index(key) <= 8):
         keypos = 5
-        rise = keys.index(key) - keypos - 3
+        rise = keys.index(key) - keypos - 2
     elif(keys.index(key) <= 10):
         keypos = 6
-        rise = keys.index(key) - keypos - 4
+        rise = keys.index(key) - keypos - 3
     elif(keys.index(key) <= 11):
         keypos = 7
         rise = 0
     location = 49 - globalname.mainlocation * 21 - keypos*3    # has 7 note from C to C
     #print (math.ceil(note_length), location )
-    globalname.notelist.append([math.ceil(note_length),location,320,rise])
+    note_start_point = math.ceil(note_length) * 3
+    globalname.notelist.append([math.ceil(note_length),location,320 - note_start_point, rise])
     #print (globalname.notelist)
 
     '''score_ = pygame.image.load("score_high.png")
@@ -147,12 +148,12 @@ def displaynote(screen):
         globalname.notelist.pop(0)
     for i in globalname.notelist:
         if( i[1]!= 99 ):
+            note_start_point = 0
             if (i[0] <= 2 ):
                 i[2] = i[2] - speed
-                if 1:
-                    note = pygame.image.load("./notelib/sixteenth_note.png")
-                    screen.blit(note,(i[2],i[1]))
-                    #globalname.count += 2
+                note = pygame.image.load("./notelib/sixteenth_note.png")
+                screen.blit(note,(i[2],i[1]))
+                #globalname.count += 2
             elif (i[0] <= 4 ):
                 i[2] = i[2] - speed
                 note = pygame.image.load("./notelib/eighth_note.png")
@@ -178,9 +179,10 @@ def displaynote(screen):
                 note = pygame.image.load("./notelib/whole_note.png")
                 screen.blit(note,(i[2],i[1]))
                 
-            '''if (i[3] == 1):
+            if (i[3] == 1):
                 rise = pygame.image.load("./notelib/rise.png")
-                screen,blit(rise,(i[2],i[1]-5))'''
+                rise = pygame.transform.scale(rise,(8,16))
+                screen.blit(rise,(i[2]-3,i[1]+41))
                 
                 
         else:
@@ -188,23 +190,23 @@ def displaynote(screen):
                 if (i[0] <= 2 ):
                     i[2] = i[2] - speed
                     note = pygame.image.load("./notelib/sixteenth_rest.png")
-                    screen.blit(note,(i[2]-5,50))
+                    screen.blit(note,(i[2]-6,50))
                 elif (i[0] <= 4 ):
                     i[2] = i[2] - speed
                     note = pygame.image.load("./notelib/eighth_rest.png")
-                    screen.blit(note,(i[2]-10,50))
+                    screen.blit(note,(i[2]-12,50))
                 elif (i[0] <= 8 ):
                     i[2] = i[2] - speed
                     note = pygame.image.load("./notelib/quarter_rest.png")
-                    screen.blit(note,(i[2]-20,50))
+                    screen.blit(note,(i[2]-24,50))
                 elif (i[0] <= 16 ):
                     i[2] = i[2] - speed
                     note = pygame.image.load("./notelib/quarter_rest.png")
-                    screen.blit(note,(i[2]-40,50))
+                    screen.blit(note,(i[2]-48,50))
                 elif (i[0] <= 32 ):
                     i[2] = i[2] - speed
                     note = pygame.image.load("./notelib/quarter_rest.png")
-                    screen.blit(note,(i[2]-80,50))
+                    screen.blit(note,(i[2]-96,50))
                 else:
                     i[2] = i[2] - speed                    
             else:
