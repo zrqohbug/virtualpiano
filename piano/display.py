@@ -5,19 +5,44 @@ import time
 import subprocess
 import math
 import pygame
-from pygame.locals import* 
-    os.putenv('SDL_VIDEODRIVER','fbcon')
-    os.putenv('SDL_FBDEV','/dev/fb1')
-    os.putenv('SDL_MOUSEDRV','TSLIB')
-    os.putenv('SDL_MOUSEDEV','/dev/input/touchscreen')
+from pygame.locals import*
+import globalname
 
-def displaynote():
-    pygame.mouse.set_visible(False)
-    WHITE = 255,255,255
-    BLACK = 0,0,0
-    screen = pygame.display.set_mode((320,240))
-    x = 0
-    y = 1
+base_rhy = 0.07
+high_basic = [320,40]
+low_basic = [320,80]
+
+
+def appendnote(key,note_duration,keys):
+    note_length = (note_duration + 0.05 ) / base_rhy
+    if(keys.index(key) <= 1):
+        keypos = 1
+        rise = keys.index(key) - keypos + 1
+    elif(keys.index(key) <= 3):
+        keypos = 2
+        rise = keys.index(key) - keypos - 0
+    elif(keys.index(key) <= 4):
+        keypos = 3
+        rise = keys.index(key) - keypos - 1
+    elif(keys.index(key) <= 6):
+        keypos = 4
+        rise = keys.index(key) - keypos - 1
+    elif(keys.index(key) <= 8):
+        keypos = 5
+        rise = keys.index(key) - keypos - 2
+    elif(keys.index(key) <= 10):
+        keypos = 6
+        rise = keys.index(key) - keypos - 3
+    elif(keys.index(key) <= 11):
+        keypos = 7
+        rise = 0
+    location = globalname.locationheight - globalname.mainlocation * 21 - keypos*3    # has 7 note from C to C
+    #print (math.ceil(note_length), location )
+    note_start_point = math.ceil(note_length) * 3
+    globalname.notelist.append([math.ceil(note_length) , location , 320 - note_start_point , rise])
+    #print (globalname.notelist)
+
+    '''score_ = pygame.image.load("score_high.png")
     my_font = pygame.font.Font(None,22)
     my_lefthistory = {'Left History':(70,20)}
     my_righthistory = {'Right History':(250,20)}
@@ -40,10 +65,6 @@ def displaynote():
     duty_cycle = pulse_duration * 100 / (pulse_duration + 20.0)
     pwm_instance_1.start(duty_cycle)		# where 0.0 <= duty_cycle <= 100.0
     pwm_instance_2.start(duty_cycle)		# where 0.0 <= duty_cycle <= 100.0
-    state =  0
-    flag = 0
-    p1 = 3
-    p2 = 3
 
     while True:
         screen.fill(BLACK)
@@ -88,6 +109,173 @@ def displaynote():
         except Keyboardinterrupt:  
     	GPIO.cleanup()         
 
-        pygame.display.flip()
+        pygame.display.flip()'''
+        
+def appendrest(note_duration):
+    rest_length = ( note_duration - 0.05 ) / base_rhy 
+    #if (math.floor(rest_length) > 3 ):
+    globalname.notelist.append([math.floor(rest_length),99,320,0])
+    #location = globalname.mainlocation * 12 + keys.index(key)
 
-def display():
+def displaykey(screen):
+    keyboard = pygame.image.load("./notelib/keyboard/1_0.jpg")
+    keyboard = pygame.transform.scale(keyboard,(320,80))
+    screen.blit(keyboard,(0,160))     
+
+def displaykeyboard(key,keys,screen):
+    if ( keys.index(key) == 0 ):
+        keyboard = pygame.image.load("./notelib/keyboard/1_1.jpg")
+        keyboard = pygame.transform.scale(keyboard,(320,80))
+        screen.blit(keyboard,(0,160))
+    if ( keys.index(key) == 1 ):
+        keyboard = pygame.image.load("./notelib/keyboard/1_2.jpg")
+        keyboard = pygame.transform.scale(keyboard,(320,80))
+        screen.blit(keyboard,(0,160))
+    if ( keys.index(key) == 2 ):
+        keyboard = pygame.image.load("./notelib/keyboard/1_3.jpg")
+        keyboard = pygame.transform.scale(keyboard,(320,80))
+        screen.blit(keyboard,(0,160))
+    if ( keys.index(key) == 3 ):
+        keyboard = pygame.image.load("./notelib/keyboard/1_4.jpg")
+        keyboard = pygame.transform.scale(keyboard,(320,80))
+        screen.blit(keyboard,(0,160))
+    if ( keys.index(key) == 4 ):
+        keyboard = pygame.image.load("./notelib/keyboard/1_5.jpg")
+        keyboard = pygame.transform.scale(keyboard,(320,80))
+        screen.blit(keyboard,(0,160))
+    if ( keys.index(key) == 5 ):
+        keyboard = pygame.image.load("./notelib/keyboard/1_6.jpg")
+        keyboard = pygame.transform.scale(keyboard,(320,80))
+        screen.blit(keyboard,(0,160))
+    if ( keys.index(key) == 6 ):
+        keyboard = pygame.image.load("./notelib/keyboard/1_7.jpg")
+        keyboard = pygame.transform.scale(keyboard,(320,80))
+        screen.blit(keyboard,(0,160))
+    if ( keys.index(key) == 7 ):
+        keyboard = pygame.image.load("./notelib/keyboard/1_8.jpg")
+        keyboard = pygame.transform.scale(keyboard,(320,80))
+        screen.blit(keyboard,(0,160)) 
+    if ( keys.index(key) == 8 ):
+        keyboard = pygame.image.load("./notelib/keyboard/1_9.jpg")
+        keyboard = pygame.transform.scale(keyboard,(320,80))
+        screen.blit(keyboard,(0,160))
+    if ( keys.index(key) == 9 ):
+        keyboard = pygame.image.load("./notelib/keyboard/1_10.jpg")
+        keyboard = pygame.transform.scale(keyboard,(320,80))
+        screen.blit(keyboard,(0,160))
+    if ( keys.index(key) == 10 ):
+        keyboard = pygame.image.load("./notelib/keyboard/1_11.jpg")
+        keyboard = pygame.transform.scale(keyboard,(320,80))
+        screen.blit(keyboard,(0,160))
+    if ( keys.index(key) == 11 ):
+        keyboard = pygame.image.load("./notelib/keyboard/1_12.jpg")
+        keyboard = pygame.transform.scale(keyboard,(320,80))
+        screen.blit(keyboard,(0,160)) 
+        
+    
+def displaybase(screen):
+    score = pygame.image.load("./notelib/base.png")
+    score = pygame.transform.scale(score,(320,120))
+    screen.blit(score,(0,globalname.locationheight - 9))
+    globalname.count1 += 1
+    globalname.count2 += 1
+    speed = 1.2
+    location1 = 320 - globalname.count1 * speed
+    #print (globalname.count1,globalname.count2)
+    if globalname.count1 > 200:
+        globalname.count1 = 0 
+    location2 = 320 - globalname.count2 * speed
+    if globalname.count2 > 200:
+        globalname.count2 = 0 
+        
+    line1 = pygame.image.load("./notelib/line.png")
+    line1 = pygame.transform.scale(line1,(4,88))
+    screen.blit(line1,(location1, globalname.locationheight + 10))
+    '''line2 = pygame.image.load("./notelib/line.png")
+    line2 = pygame.transform.scale(line2,(4,88))
+    screen.blit(line2,(location2,59))  '''
+
+def displaynote(screen):
+    #pass
+    speed = 1.2
+    if( not globalname.notelist ):
+        globalname.notelist.append([0,0,0])
+    if( globalname.notelist[0][2] < 80):
+        globalname.notelist.pop(0)
+    for i in globalname.notelist:
+        if( i[1]!= 99 ):
+            note_start_point = 0
+            if (i[0] <= 2 ):
+                i[2] = i[2] - speed
+                note = pygame.image.load("./notelib/sixteenth_note.png")
+                screen.blit(note,(i[2],i[1]))
+                #globalname.count += 2
+            elif (i[0] <= 4 ):
+                i[2] = i[2] - speed
+                note = pygame.image.load("./notelib/eighth_note.png")
+                screen.blit(note,(i[2],i[1]))
+                #globalname.count += 4
+            elif (i[0] <= 8 ):
+                i[2] = i[2] - speed
+                note = pygame.image.load("./notelib/quarter_note.png")
+                screen.blit(note,(i[2],i[1]))
+                #globalname.count += 8
+            elif (i[0] <= 16 ):
+                i[2] = i[2] - speed
+                note = pygame.image.load("./notelib/half_note.png")
+                screen.blit(note,(i[2],i[1]))
+                #globalname.count += 16
+            elif (i[0] <= 32 ):
+                i[2] = i[2] - speed
+                note = pygame.image.load("./notelib/whole_note.png")
+                screen.blit(note,(i[2],i[1]))
+                #globalname.count += 32
+            else:
+                i[2] = i[2] - speed
+                note = pygame.image.load("./notelib/whole_note.png")
+                screen.blit(note,(i[2],i[1]))
+                
+            if (i[3] == 1):
+                rise = pygame.image.load("./notelib/rise.png")
+                rise = pygame.transform.scale(rise,(8,16))
+                screen.blit(rise,(i[2]-3,i[1]+41))
+                
+                
+        else:
+            if (math.floor(i[0]) > 3 ):
+                if (i[0] <= 2 ):
+                    i[2] = i[2] - speed
+                    note = pygame.image.load("./notelib/sixteenth_rest.png")
+                    screen.blit(note,(i[2]-6,globalname.locationheight + 2))
+                elif (i[0] <= 4 ):
+                    i[2] = i[2] - speed
+                    note = pygame.image.load("./notelib/eighth_rest.png")
+                    screen.blit(note,(i[2]-12,globalname.locationheight + 2))
+                elif (i[0] <= 8 ):
+                    i[2] = i[2] - speed
+                    note = pygame.image.load("./notelib/quarter_rest.png")
+                    screen.blit(note,(i[2]-24,globalname.locationheight + 2))
+                elif (i[0] <= 16 ):
+                    i[2] = i[2] - speed
+                    note = pygame.image.load("./notelib/quarter_rest.png")
+                    screen.blit(note,(i[2]-48,globalname.locationheight + 2))
+                elif (i[0] <= 32 ):
+                    i[2] = i[2] - speed
+                    note = pygame.image.load("./notelib/quarter_rest.png")
+                    screen.blit(note,(i[2]-96,globalname.locationheight + 2))
+                else:
+                    i[2] = i[2] - speed                    
+            else:
+                i[2] = i[2] - speed
+                    #else:
+
+                
+                
+    print (globalname.notelist)
+    
+    #for notelength,notelocation in globalname.notelist.items()
+    
+
+#def note_type(note_length,tune_length):
+
+
