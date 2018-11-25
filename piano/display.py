@@ -36,10 +36,10 @@ def appendnote(key,note_duration,keys):
     elif(keys.index(key) <= 11):
         keypos = 7
         rise = 0
-    location = 49 - globalname.mainlocation * 21 - keypos*3    # has 7 note from C to C
+    location = globalname.locationheight - globalname.mainlocation * 21 - keypos*3    # has 7 note from C to C
     #print (math.ceil(note_length), location )
     note_start_point = math.ceil(note_length) * 3
-    globalname.notelist.append([math.ceil(note_length),location,320 - note_start_point, rise])
+    globalname.notelist.append([math.ceil(note_length) , location , 320 - note_start_point , rise])
     #print (globalname.notelist)
 
     '''score_ = pygame.image.load("score_high.png")
@@ -176,7 +176,7 @@ def displaykeyboard(key,keys,screen):
 def displaybase(screen):
     score = pygame.image.load("./notelib/base.png")
     score = pygame.transform.scale(score,(320,120))
-    screen.blit(score,(0,40))
+    screen.blit(score,(0,globalname.locationheight - 9))
     globalname.count1 += 1
     globalname.count2 += 1
     speed = 1.2
@@ -190,7 +190,7 @@ def displaybase(screen):
         
     line1 = pygame.image.load("./notelib/line.png")
     line1 = pygame.transform.scale(line1,(4,88))
-    screen.blit(line1,(location1,59))
+    screen.blit(line1,(location1, globalname.locationheight + 10))
     '''line2 = pygame.image.load("./notelib/line.png")
     line2 = pygame.transform.scale(line2,(4,88))
     screen.blit(line2,(location2,59))  '''
@@ -246,23 +246,23 @@ def displaynote(screen):
                 if (i[0] <= 2 ):
                     i[2] = i[2] - speed
                     note = pygame.image.load("./notelib/sixteenth_rest.png")
-                    screen.blit(note,(i[2]-6,50))
+                    screen.blit(note,(i[2]-6,globalname.locationheight + 2))
                 elif (i[0] <= 4 ):
                     i[2] = i[2] - speed
                     note = pygame.image.load("./notelib/eighth_rest.png")
-                    screen.blit(note,(i[2]-12,50))
+                    screen.blit(note,(i[2]-12,globalname.locationheight + 2))
                 elif (i[0] <= 8 ):
                     i[2] = i[2] - speed
                     note = pygame.image.load("./notelib/quarter_rest.png")
-                    screen.blit(note,(i[2]-24,50))
+                    screen.blit(note,(i[2]-24,globalname.locationheight + 2))
                 elif (i[0] <= 16 ):
                     i[2] = i[2] - speed
                     note = pygame.image.load("./notelib/quarter_rest.png")
-                    screen.blit(note,(i[2]-48,50))
+                    screen.blit(note,(i[2]-48,globalname.locationheight + 2))
                 elif (i[0] <= 32 ):
                     i[2] = i[2] - speed
                     note = pygame.image.load("./notelib/quarter_rest.png")
-                    screen.blit(note,(i[2]-96,50))
+                    screen.blit(note,(i[2]-96,globalname.locationheight + 2))
                 else:
                     i[2] = i[2] - speed                    
             else:

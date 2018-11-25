@@ -63,7 +63,7 @@ def main():
     while (welcome.welcomeinit() == 0):
         a = time.time()
         b = time.time()
-        print ('Virtual Piano')
+        #print ('Virtual Piano')
     screen.fill(WHITE)
     display.displaykey(screen)
     while True:
