@@ -21,8 +21,8 @@ def parse_arguments():
         '--keyboard', '-k',
         metavar='FILE',
         type=argparse.FileType('r'),
-        default='typewriter1.kb',
-        help='keyboard file (default: typewriter.kb)')
+        default='typetest.kb',
+        help='keyboard file (default: typetest.kb)')
     parser.add_argument(
         '--verbose', '-v',
         action='store_true',
