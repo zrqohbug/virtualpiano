@@ -20,6 +20,7 @@ import display
 import time
 import globalname
 import GPIOinput
+import volume
 
 
 
@@ -30,7 +31,7 @@ def main():
     os.putenv('SDL_MOUSEDRV','TSLIB')
     os.putenv('SDL_MOUSEDEV','/dev/input/touchscreen')'''
 
-    
+    volume.volumechange(100)
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(5, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.setup(6, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -135,7 +136,7 @@ def main():
                 note_duration = b - a
                 a = time.time()
                 current_status = 1
-                #print (note_duration)
+                print (note_duration)
 
 
             '''elif event.key == pygame.K_ESCAPE:
@@ -151,7 +152,7 @@ def main():
             note_duration = b - a
             a = time.time()
             current_status = 0
-            #print (note_duration)
+            print (note_duration)
             start = 1
             globalname.n[0] = 0
             

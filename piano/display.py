@@ -206,20 +206,24 @@ def displaynote(screen):
         globalname.notelist.append([0,0,0])
     if( globalname.notelist[0][2] < 80):
         globalname.notelist.pop(0)
+
     for i in globalname.notelist:
+        #print (i)
         if( i[1]!= 99 ):
-            if( i[3] != 100):
-                if (i[3] > 0):
-                    for ( i in range(i[3])):
-                        line = pygame.image.load("./notelib/line2.png")
-                        screen.blit(line,(i[2],i[1]+i*3))
-                if (i[3] == 0 ):
-                    line = pygame.image.load("./notelib/line2.png")
-                    screen.blit(line,(i[2],i[1]))
-                if (i[3] < 0):
-                    for ( i in range(-i[3]-1)):
-                        line = pygame.image.load("./notelib/line2.png")
-                        screen.blit(line,(i[2],i[1]-i*3))                
+            if( i[4] != 100):
+                line = pygame.image.load("./notelib/line2.png")
+                line = pygame.transform.scale(line,(15,8))
+                if (i[4] > 0):
+                    for k in range(0,i[4]):
+                        
+                        screen.blit(line,(i[2]+2,i[1]+k*3+ globalname.locationheight + 16))
+                if (i[4] == 0 ):
+                    #line = pygame.image.load("./notelib/line2.png")
+                    screen.blit(line,(i[2]+2,i[1]+globalname.locationheight + 16))
+                if (i[4] < 0):
+                    for k in range(0,-i[4]-1):
+                        #line = pygame.image.load("./notelib/line2.png")
+                        screen.blit(line,(i[2]+2,i[1]-k*3+ globalname.locationheight + 16))              
             note_start_point = 0
             if (i[0] <= 2 ):
                 i[2] = i[2] - speed
