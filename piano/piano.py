@@ -21,8 +21,9 @@ import time
 import globalname
 import GPIOinput
 import volume
-
-
+import socket
+import time
+import wifi
 
 def main():
     
@@ -30,7 +31,26 @@ def main():
     os.putenv('SDL_FBDEV','/dev/fb1')
     os.putenv('SDL_MOUSEDRV','TSLIB')
     os.putenv('SDL_MOUSEDEV','/dev/input/touchscreen')'''
+    
+    wifi.init()
 
+    
+    UDP_IP = "192.168.4.9"
+    UDP_PORT = 9008
+
+    MESSAGE = "Break!"
+
+    print "UDP target IP:", UDP_IP
+    print "UDP target port:", UDP_PORT
+    print "message:", MESSAGE
+
+    #sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+    sock2 = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+
+
+    #sock.sendto(MESSAGE, (UDP_IP,UDP_PORT))
+    sock2.bind(("192.168.4.1",8080))
+    
     volume.volumechange(100)
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(5, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -105,9 +125,23 @@ def main():
         #print ('Virtual Piano')
     screen.fill(WHITE)
     display.displaykey(screen)
+    
     while True:
         #event = pygame.event.poll()
         #print (n)
+        data, addr = sock2.recvfrom(10)
+        if data == 'L':
+            print "-------------------------------------receive button L"
+            
+        elif data == 'R':
+            print "-------------------------------------receive button R"
+            
+        elif data == 'F':
+            print "-------------------------------------receive button F"
+            
+        else:
+            print "receive data:", data
+            
         key = str(globalname.n[1])
         event = globalname.n[0]
         #print (key,event)
@@ -152,7 +186,7 @@ def main():
             note_duration = b - a
             a = time.time()
             current_status = 0
-            print (note_duration)
+            #print (note_duration)
             start = 1
             globalname.n[0] = 0
             

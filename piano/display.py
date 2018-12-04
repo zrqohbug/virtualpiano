@@ -269,7 +269,7 @@ def findlength(act_length):
     else:
         return 64
                 
-    print (globalname.notelist)
+    #print (globalname.notelist)
     
     #for notelength,notelocation in globalname.notelist.items()
 
