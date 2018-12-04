@@ -8,7 +8,7 @@ import warnings
 
 
 def parse_arguments():
-    description = ('Use your computer keyboard as a "piano"')
+    description = ('"virtual piano"')
 
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument(
@@ -16,13 +16,13 @@ def parse_arguments():
         metavar='FILE',
         type=argparse.FileType('r'),
         default='bowl.wav',
-        help='WAV file (default: bowl.wav)')
+        help='WAV file')
     parser.add_argument(
         '--keyboard', '-k',
         metavar='FILE',
         type=argparse.FileType('r'),
         default='typetest.kb',
-        help='keyboard file (default: typetest.kb)')
+        help='keyboard file')
     parser.add_argument(
         '--verbose', '-v',
         action='store_true',

@@ -136,7 +136,7 @@ def main():
                 note_duration = b - a
                 a = time.time()
                 current_status = 1
-                print (note_duration)
+                #print (note_duration)
 
 
             '''elif event.key == pygame.K_ESCAPE:
