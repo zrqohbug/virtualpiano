@@ -38,7 +38,7 @@ def main():
     UDP_IP = "192.168.4.9"
     UDP_PORT = 9008
 
-    MESSAGE = "Break!"
+    MESSAGE = "www"
 
     print "UDP target IP:", UDP_IP
     print "UDP target port:", UDP_PORT
@@ -105,8 +105,8 @@ def main():
     sounds = map(pygame.sndarray.make_sound, transposed_sounds)
     key_sound = dict(zip(keys, sounds))
     playing = {k: 0 for k in keys}
-    note_duration = {k: 0 for k in keys}
-    former_duration = {k: 0 for k in keys}
+    note_duration = 0
+    former_duration = 0
     rest_duration = 0
     note_length = 0
     tune_length = 0
@@ -115,9 +115,9 @@ def main():
     WHITE = 255,255,255
     BLACK = 0,0,0
     GPIO.setmode(GPIO.BCM)
-    a = {k: 0 for k in keys}
+    a = 0
     a_rest = 0
-    b = {k: 0 for k in keys}
+    b = 0
     b_rest = 0
     
     #a.append(0)
@@ -127,13 +127,12 @@ def main():
     KEYDOWN = 99
     KEYUP = 100
     genrestflag = 0
-    needtogenerate  = 0
+    needtogenerate  = 1
+    needtogenrest = 1
     #################################################################################
     while (welcome.welcomeinit() == 0):
-        a = {k: time.time() for k in keys}
-        b = {k: time.time() for k in keys}
-        a_rest = time.time()
-        b_rest = time.time()
+        a = time.time()
+        b = time.time()
         #print(1)
         #print ('Virtual Piano')
     screen.fill(WHITE)
@@ -166,7 +165,7 @@ def main():
         if event == KEYDOWN:
             #print (globalname.n)
             if (key in key_sound.keys()) and (playing[key] == 0):
-                #sock.sendto(MESSAGE, (UDP_IP,UDP_PORT))
+                sock.sendto(MESSAGE, (UDP_IP,UDP_PORT))
                 #data, addr = sock2.recvfrom(10)
                 #print "receive data:", data
                 
@@ -183,16 +182,12 @@ def main():
                 
                 
                 key_sound[key].play(fade_ms=50)
-                playing[key] = 1
-                b_rest = time.time()
-                rest_duration = b_rest - a_rest
-                a[key] = time.time()
+                playing[key] = 1                
+                b = time.time()
+                note_duration = b - a
+                #print (note_duration)
+                a = time.time()           
                 current_status = 1
-                needtogenerate = 1
-                if (needtogenrest == 0):
-                    genrestflag = 1
-                needtogenrest = 0
-
                 #print (note_duration)
                 
                 '''time.sleep(0.01)
@@ -211,38 +206,28 @@ def main():
                 data, addr = sock2.recvfrom(10)
                 print "receive data:", data'''
 
-
-            '''elif event.key == pygame.K_ESCAPE:
-                pygame.quit()
-                raise KeyboardInterrupt'''
-
         elif event == KEYUP and key in key_sound.keys():
-            print (globalname.n)
+            # print (globalname.n)
             # Stops with 50ms fadeout
+            
             key_sound[key].fadeout(50)
             playing[key] = 0
-
-            b[key] = time.time()
-            note_duration[key] = b[key] - a[key]
-            needtogenerate = 0
-            if '1' in playing.value():
-                pass
-            else:
-                a_rest = time.time()
-                needtogenrest = 1
+            b = time.time()
+            note_duration = b - a
             #print (note_duration)
+            a = time.time()
             start = 1
             globalname.n[0] = 0
+            current_status = 0
+            #print(event,key)
             
-        for keyv in key_sound.keys():  
-            if ( former_duration[keyv] != note_duration[keyv] ):
-                if (needtogenerate == 0):
-                    display.appendnote(key,note_duration[keyv],keys)
-            former_duration[keyv] = note_duration[keyv]
-
-        if (start and needtogenrest == 0 and genrestflag == 0):
-            display.appendrest(rest_duration)
-        genrestflag = 0    
+        #for keyv in key_sound.keys():  
+        if ( former_duration != note_duration ):
+            if (current_status == 0):
+                display.appendnote(key,note_duration,keys)
+            else:
+                display.appendrest(note_duration)
+        #genrestflag = 0    
         #print(note_duration)
         screen.fill(WHITE)
         if (current_status == 0):
@@ -253,6 +238,7 @@ def main():
         if (start) :
             display.displaynote(screen)
         #display.display(notelist)
+        former_duration = note_duration
         
         
 if __name__ == '__main__':
