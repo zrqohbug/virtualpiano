@@ -148,7 +148,7 @@ def displaynote(screen):
         globalname.notelist.pop(0)
 
     for i in globalname.notelist:
-        print (i)
+        #print (i)
         if( i[1]!= 99 ):
             if( i[4] != 100):
                 line = pygame.image.load("./notelib/line2.png")

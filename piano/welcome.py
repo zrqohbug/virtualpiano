@@ -33,7 +33,7 @@ def welcomeinit():
                     if ( y < 160 and y > 80):
                         if ( x < 200 and x > 120):
                             return 1
-
+            #print (2 )
             pygame.display.flip()
             return 0 
         except Keyboardinterrupt:  
