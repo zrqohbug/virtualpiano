@@ -118,7 +118,7 @@ def main():
     note_length = 0
     tune_length = 0
     pygame.init()
-    pygame.mouse.set_visible(True)
+    pygame.mouse.set_visible(False)
     WHITE = 255,255,255
     BLACK = 0,0,0
     GPIO.setmode(GPIO.BCM)
@@ -137,9 +137,9 @@ def main():
     needtogenrest = 1
     #################################################################################
     
-    while (welcome.welcomeinit() == 0):
-        a = time.time()
-        b = time.time()
+    #while (welcome.welcomeinit() == 0):
+    a = time.time()
+    b = time.time()
         #print(1)
         #print ('Virtual Piano')
     screen.fill(WHITE)
@@ -171,15 +171,15 @@ def main():
                 data, addr = sock.recvfrom(100)
                 #print "receive data:", type(data),data
                 globalname.mainlocation = int(data) % 10 - 2
+                if (globalname.mainlocation == 3):
+                    pygame.quit()
                 # print globalname.mainlocation
                 #if(globalname.mainlocation > 
                 vol = int(data) / 10
-                if vol > 120:
+                if vol > 35:
                     sound_vol = 100
-                elif vol > 70:
-                    sound_vol = 90
                 else:
-                    sound_vol = 80
+                    sound_vol = 90
                 volume.volumechange(sound_vol)
                 #sock.close()
                 #print "receive data:", data
