@@ -1,15 +1,18 @@
 #!/usr/bin/env python
-
+import os
 from scipy.io import wavfile
 import argparse
 import numpy as np
 import pygame
+from pygame.locals import*
 import sys
 import warnings
 import RPi.GPIO as GPIO
 import time
 import subprocess
 import math
+import threading
+import socket
 
 import parse_arguments 
 import stretch 
@@ -21,16 +24,16 @@ import time
 import globalname
 import GPIOinput
 import volume
-import socket
-import time
 import wifi
+
+
 
 def main():
     
-    '''os.putenv('SDL_VIDEODRIVER','fbcon')
+    os.putenv('SDL_VIDEODRIVER','fbcon')
     os.putenv('SDL_FBDEV','/dev/fb1')
     os.putenv('SDL_MOUSEDRV','TSLIB')
-    os.putenv('SDL_MOUSEDEV','/dev/input/touchscreen')'''
+    os.putenv('SDL_MOUSEDEV','/dev/input/touchscreen')
     
     wifi.init()
 
@@ -38,19 +41,17 @@ def main():
     UDP_IP = "192.168.4.9"
     UDP_PORT = 9008
 
-    MESSAGE = "www"
+    MESSAGE = "w"
 
     print "UDP target IP:", UDP_IP
     print "UDP target port:", UDP_PORT
     print "message:", MESSAGE
 
     sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
-    sock2 = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
-
-
+    #sock2 = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
     #sock.sendto(MESSAGE, (UDP_IP,UDP_PORT))
-    sock2.bind(("192.168.4.1",8080))
-    
+    sock.bind(("192.168.4.1",8080))
+    #sock2.bind(("192.168.4.1",9090))
     volume.volumechange(100)
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(5, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -85,8 +86,6 @@ def main():
     
     # Parse command line arguments
     (args, parser) = parse_arguments.parse_arguments()
-
-    # Enable warnings from scipy if requested
     if not args.verbose:
         warnings.simplefilter('ignore')
 
@@ -97,13 +96,21 @@ def main():
     sys.stdout.write('Ready for the computation.. ')
     sys.stdout.flush()
     transposed_sounds = [shift_pitch.shift_pitch(sound, n) for n in tones]
-    #transposed_all = [shift_pitch.shift_pitch(sound, n) for n in tones_all]
+    
     pygame.mixer.init(fps, -16, 1, 2048)
+    
     # init############################################################################
     screen = pygame.display.set_mode((320,240))
     keys = args.keyboard.read().split('\n')
     sounds = map(pygame.sndarray.make_sound, transposed_sounds)
     key_sound = dict(zip(keys, sounds))
+       
+    keys_all = args.keyall.read().split('\n')
+    transposed_sounds_all = [shift_pitch.shift_pitch(sound, n) for n in tones_all]
+    sounds_all = map(pygame.sndarray.make_sound, transposed_sounds_all)
+    key_sound_all = dict(zip(keys_all, sounds_all))
+    
+    print(keys)
     playing = {k: 0 for k in keys}
     note_duration = 0
     former_duration = 0
@@ -118,8 +125,7 @@ def main():
     a = 0
     a_rest = 0
     b = 0
-    b_rest = 0
-    
+    b_rest = 0    
     #a.append(0)
     #b.append(0)
     start = 0
@@ -130,6 +136,7 @@ def main():
     needtogenerate  = 1
     needtogenrest = 1
     #################################################################################
+    
     while (welcome.welcomeinit() == 0):
         a = time.time()
         b = time.time()
@@ -137,21 +144,16 @@ def main():
         #print ('Virtual Piano')
     screen.fill(WHITE)
     display.displaykey(screen)
+    #timer = threading.Timer(1,listenbutton)
+    #timer.start()
     #print (a,b,keys)
     while True:
-        #event = pygame.event.poll()
-        #print (n)          
-            
-        #else:
-            #print "receive data:", data
             
         key = str(globalname.n[1])
         event = globalname.n[0]
-        #print (key,event)
         pygame.display.flip()
         '''if event.type in (pygame.KEYDOWN, pygame.KEYUP):
-            key = pygame.key.name(event.key)'''
-    
+            key = pygame.key.name(event.key)''' 
 
         '''if event.type == pygame.KEYDOWN:
             if (key in key_sound.keys()) and (playing[key] == 0):
@@ -166,22 +168,28 @@ def main():
             #print (globalname.n)
             if (key in key_sound.keys()) and (playing[key] == 0):
                 sock.sendto(MESSAGE, (UDP_IP,UDP_PORT))
-                #data, addr = sock2.recvfrom(10)
+                data, addr = sock.recvfrom(100)
+                #print "receive data:", type(data),data
+                globalname.mainlocation = int(data) % 10 - 2
+                # print globalname.mainlocation
+                #if(globalname.mainlocation > 
+                vol = int(data) / 10
+                if vol > 120:
+                    sound_vol = 100
+                elif vol > 70:
+                    sound_vol = 90
+                else:
+                    sound_vol = 80
+                volume.volumechange(sound_vol)
+                #sock.close()
                 #print "receive data:", data
-                
-                '''if data == 'L':
-                    print "-------------------------------------receive button L"
-                    globalname.location -= 1
-                    
-                elif data == 'R':
-                    print "-------------------------------------receive button R"
-                    globalname.location += 1 
-            
-                elif data == 'F':
-                    print "-------------------------------------receive button F"'''
-                
-                
-                key_sound[key].play(fade_ms=50)
+                #key_sound[key].play(fade_ms=50)
+                #print (type(key))
+                if (globalname.mainlocation >= 0):
+                    sear = (globalname.mainlocation*100 + int(key) )
+                else:
+                    sear = (globalname.mainlocation*100 - int(key) )
+                key_sound_all[str(sear)].play(fade_ms=50)
                 playing[key] = 1                
                 b = time.time()
                 note_duration = b - a
@@ -189,28 +197,18 @@ def main():
                 a = time.time()           
                 current_status = 1
                 #print (note_duration)
-                
-                '''time.sleep(0.01)
-                data, addr = sock2.recvfrom(10)
-                print "receive data:", data
-                time.sleep(0.01)
-                data, addr = sock2.recvfrom(10)
-                print "receive data:", data
-                time.sleep(0.01)
-                data, addr = sock2.recvfrom(10)
-                print "receive data:", data
-                time.sleep(0.01)
-                data, addr = sock2.recvfrom(10)
-                print "receive data:", data
-                time.sleep(0.01)
-                data, addr = sock2.recvfrom(10)
-                print "receive data:", data'''
+
 
         elif event == KEYUP and key in key_sound.keys():
             # print (globalname.n)
             # Stops with 50ms fadeout
             
-            key_sound[key].fadeout(50)
+            #key_sound[key].fadeout(50)
+            if (globalname.mainlocation >= 0):
+                sear = (globalname.mainlocation*100 + int(key) )
+            else:
+                sear = (globalname.mainlocation*100 - int(key) )
+            key_sound_all[str(sear)].fadeout(50)
             playing[key] = 0
             b = time.time()
             note_duration = b - a

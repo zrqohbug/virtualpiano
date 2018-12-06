@@ -5,7 +5,9 @@ import time
 import subprocess
 import math
 import pygame
-from pygame.locals import* 
+import globalname
+from pygame.locals import*
+
 
 def welcomeinit():
     screen = pygame.display.set_mode((320,240))
@@ -30,9 +32,15 @@ def welcomeinit():
                 elif(event.type is MOUSEBUTTONUP):
                     pos = pygame.mouse.get_pos()
                     x,y = pos
-                    if ( y < 160 and y > 80):
+                    if ( y < 120 and y > 40):
                         if ( x < 200 and x > 120):
+                            globalname.instructment_type = 1
                             return 1
+                    if( y < 200 and y > 120):
+                        if ( x < 200 and x > 120):
+                            globalname.instructment_type = 1
+                            return 2
+                    
             #print (2 )
             pygame.display.flip()
             return 0 

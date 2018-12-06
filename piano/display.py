@@ -217,11 +217,11 @@ def displaynote(screen):
                 if(i[5] == 1):
                     rise = pygame.image.load("./notelib/rise.png")
                     rise = pygame.transform.scale(rise,(8,16))
-                    screen.blit(rise,(i[2]-3,i[1]+41))
+                    screen.blit(rise,(i[2]-2,i[1]+41))
                 else:
                     rise = pygame.image.load("./notelib/rise.png")
                     rise = pygame.transform.scale(rise,(8,16))
-                    screen.blit(rise,(i[2]  ,i[1]+37))                 
+                    screen.blit(rise,(i[2] + 1 ,i[1]+37))                 
                 
         else:
             if globalname.mainlocation < 0:
