@@ -27,12 +27,6 @@ def parse_arguments():
         '--verbose', '-v',
         action='store_true'
         )
-    parser.add_argument(
-        '--wav', '-w',
-        metavar='FILE',
-        type=argparse.FileType('r'),
-        default='piano.wav'
-        )
 
     return (parser.parse_args(), parser)
 

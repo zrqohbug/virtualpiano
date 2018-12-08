@@ -90,7 +90,7 @@ def main():
         warnings.simplefilter('ignore')
 
     # Generate sound #################
-    fps, sound = wavfile.read(args.wav.name)
+    fps, sound = wavfile.read(piano.wav)
     tones = range(-24, -12)
     tones_all = range(-48, 12)
     sys.stdout.write('Ready for the computation.. ')
@@ -163,12 +163,15 @@ def main():
                 globalname.mainlocation = int(data) % 10 - 2
                 if (globalname.mainlocation == 3):
                     pygame.quit()
-
                 vol = int(data) / 10
-                if vol > 35:
+                if vol > 100:
                     sound_vol = 100
+                elif vol > 40:
+                	sound_vol = 90
+                elif vol > 20:
+                    sound_vol = 80
                 else:
-                    sound_vol = 90
+                	sound_vol = 70
                 volume.volumechange(sound_vol)
 
                 # generate note sound ################
