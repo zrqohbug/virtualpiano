@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+# The sub-program is to set GPIO interrupt ################
 import RPi.GPIO as GPIO
 import time
 import piano

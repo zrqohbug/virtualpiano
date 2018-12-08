@@ -12,18 +12,6 @@ def parse_arguments():
 
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument(
-        '--wav', '-w',
-        metavar='FILE',
-        type=argparse.FileType('r'),
-        default='bowl.wav'
-        )
-    '''parser.add_argument(
-        '--piano', '-p',
-        metavar='FILE',
-        type=argparse.FileType('r'),
-        default='piano.wav'
-        )'''
-    parser.add_argument(
         '--keyboard', '-k',
         metavar='FILE',
         type=argparse.FileType('r'),
@@ -38,6 +26,12 @@ def parse_arguments():
     parser.add_argument(
         '--verbose', '-v',
         action='store_true'
+        )
+    parser.add_argument(
+        '--wav', '-w',
+        metavar='FILE',
+        type=argparse.FileType('r'),
+        default='piano.wav'
         )
 
     return (parser.parse_args(), parser)

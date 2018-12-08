@@ -14,6 +14,7 @@ low_basic = [320,80]
 
 
 def appendnote(key,note_duration,keys):
+    # The sub-program is to generate note append to a note list with note elements ################
     note_length = (note_duration + 0.05 ) / base_rhy
     localpos = globalname.mainlocation * 12 + keys.index(key)
     if (localpos >= 0 and localpos <= 10):
@@ -48,18 +49,14 @@ def appendnote(key,note_duration,keys):
     location = globalname.locationheight - globalname.mainlocation * 21 - keypos*3    # has 7 note from C to C
     if globalname.mainlocation < 0:
         location = location + 22                  #need to modify
-    #print (math.ceil(note_length), location )
     note_start_point = math.ceil(note_length) * 3
     line_number = short_line(location,keypos,keys.index(key))
-    #print(line_number)
     globalname.notelist.append([math.ceil(note_length) , location , 320 - note_start_point ,rise,line_number,pngpos])
-    #print (globalname.notelist)
         
 def appendrest(note_duration):
+    # The sub-program is to generate rest to the notelist ################
     rest_length = ( note_duration - 0.05 ) / base_rhy 
-    #if (math.floor(rest_length) > 3 ):
     globalname.notelist.append([math.floor(rest_length),99,320 - findlength(rest_length) * 1.5,0])
-    #location = globalname.mainlocation * 12 + keys.index(key)
 
 def displaykey(screen):
     keyboard = pygame.image.load("./notelib/keyboard/1_0.jpg")
@@ -67,6 +64,7 @@ def displaykey(screen):
     screen.blit(keyboard,(0,160))     
 
 def displaykeyboard(key,keys,screen):
+    # The sub-program is to generate keyboard ################
     if ( keys.index(key) == 0 ):
         keyboard = pygame.image.load("./notelib/keyboard/1_1.jpg")
         keyboard = pygame.transform.scale(keyboard,(320,80))
@@ -118,6 +116,7 @@ def displaykeyboard(key,keys,screen):
         
     
 def displaybase(screen):
+    # The sub-program is to generate staff base ################
     score = pygame.image.load("./notelib/base.png")
     score = pygame.transform.scale(score,(320,120))
     screen.blit(score,(0,globalname.locationheight - 9))
@@ -134,13 +133,10 @@ def displaybase(screen):
         
     line1 = pygame.image.load("./notelib/line.png")
     line1 = pygame.transform.scale(line1,(4,88))
-    #screen.blit(line1,(location1, globalname.locationheight + 10))
-    '''line2 = pygame.image.load("./notelib/line.png")
-    line2 = pygame.transform.scale(line2,(4,88))
-    screen.blit(line2,(location2,59))  '''
+
 
 def displaynote(screen):
-    #pass
+    # The sub-program is to display differnet type of notes ################
     speed = 3
     if( not globalname.notelist ):
         globalname.notelist.append([0,0,0])
@@ -161,8 +157,6 @@ def displaynote(screen):
                     screen.blit(line,(i[2]+1,i[1]+ 45))
                 if (i[4] < 0):
                     for k in range(1,-i[4]+1):
-                        #print(k)
-                        #line = pygame.image.load("./notelib/line2.png")
                         screen.blit(line,(i[2]+1,i[1] + k*6 + 38))              
             note_start_point = 0
             if (i[0] <= 2 ):
@@ -200,12 +194,6 @@ def displaynote(screen):
                 else:
                     note = pygame.image.load("./notelib/half_note2.png")
                     screen.blit(note,(i[2],i[1]+31))   
-                #globalname.count += 16
-                '''elif (i[0] <= 32 ):
-                i[2] = i[2] - speed
-                note = pygame.image.load("./notelib/whole_note.png")
-                screen.blit(note,(i[2],i[1]))'''
-                #globalname.count += 32
             else:
                 i[2] = i[2] - speed
                 #if( i[5] == 1):         
@@ -256,6 +244,7 @@ def displaynote(screen):
                     #else:
 
 def findlength(act_length):
+    # The sub-program is to generate note length ################
     if (act_length <= 2 ):
         return 2
     elif (act_length <= 4 ):
@@ -269,11 +258,9 @@ def findlength(act_length):
     else:
         return 64
                 
-    #print (globalname.notelist)
-    
-    #for notelength,notelocation in globalname.notelist.items()
 
 def short_line(location,keypos,keyind):
+    # The sub-program is to display the shortline outside the staff ################    
     shortline = 100
     if(globalname.mainlocation == 2):
         shortline = 2 + math.floor(keypos / 2)
@@ -294,9 +281,8 @@ def short_line(location,keypos,keyind):
             shortline = -1
         if(keyind == 3):
             shortline = -1
-    #print (keyind)
     return shortline
 
-#def note_type(note_length,tune_length):
+
 
 
