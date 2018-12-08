@@ -4,34 +4,30 @@ import argparse
 import numpy as np
 import pygame
 import sys
-import warnings
 
 
-def stretch(array, fac, window_size, h):
-    """ Stretches/shortens a sound, by some fac """
-    phase = np.zeros(window_size)
-    hanning_window = np.hanning(window_size)
-    result = np.zeros(int(len(array) / fac + window_size))
+def stretch(array, factor, size, height):
+    length = len(array)
+    result_length = int( length / factor + size)
+    result = np.zeros(result_length)
+    phase = np.zeros(size)
+    hanning = np.hanning(size)
 
-    for i in np.arange(0, len(array) - (window_size + h), h*fac):
+    for i in np.arange(0, length - (size + height), height * factor):
         i = int(i)
-        # Two potentially overlapping subarrays
-        a1 = array[i: i + window_size]
-        a2 = array[i + h: i + window_size + h]
+        p1 = array[i: i + size]
+        p2 = array[i + height: i + size + height]
 
-        # The spectra of these arrays
-        s1 = np.fft.fft(hanning_window * a1)
-        s2 = np.fft.fft(hanning_window * a2)
+        s1 = np.fft.fft(hanning * p1)
+        s2 = np.fft.fft(hanning * p2)
 
-        # Rephase all frequencies
-        phase = (phase + np.angle(s2/s1)) % 2*np.pi
+        phase = (phase + np.angle(s2/s1)) % 2 * np.pi
 
-        a2_rephased = np.fft.ifft(np.abs(s2)*np.exp(1j*phase))
-        i2 = int(i/fac)
-        result[i2: i2 + window_size] += hanning_window*a2_rephased.real
+        p2_rephased = np.fft.ifft(np.abs(s2) * np.exp(1j * phase))
+        i_v = int(i/factor)
+        result[i_v: i_v + size] += hanning * p2_rephased.real
 
-    # normalize (16bit)
-    result = ((2**(16-4)) * result/result.max())
+    result = (4096 * result/result.max())
 
     return result.astype('int16')
 

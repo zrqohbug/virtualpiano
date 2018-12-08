@@ -1,9 +1,10 @@
 #!/usr/bin/env python
-
+# The sub-program is to set GPIO interrupt ################
 import RPi.GPIO as GPIO
 import time
 import piano
 import globalname
+import pygame
 
 def input():
     return globalname.n
@@ -47,6 +48,7 @@ def GPIO17_both(channel):
         globalname.n = [100,17]
                 
 def GPIO18_both(channel):
+
     if (GPIO.input(18) == False):
         globalname.n = [99,18]
     if (GPIO.input(18) == True):
@@ -77,6 +79,7 @@ def GPIO22_both(channel):
         globalname.n = [100,22]
             
 def GPIO23_both(channel):
+   
     if (GPIO.input(23) == False):
         globalname.n = [99,23]
     if (GPIO.input(23) == True):
